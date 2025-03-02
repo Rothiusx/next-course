@@ -6,7 +6,7 @@ import { eq } from 'drizzle-orm'
 import { NextResponse } from 'next/server'
 
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
-  const { id } = params
+  const { id } = await params
 
   const user = await db.query.usersTable.findFirst({
     where: (users, { eq }) => eq(users.id, Number(id)),
@@ -23,7 +23,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
 const userUpdateSchema = userSchema.partial()
 
 export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
-  const { id } = params
+  const { id } = await params
   const body = await request.json()
 
   // Validate the request body against the partial schema
@@ -35,24 +35,19 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
 
   try {
     // Only update with validated data
-    const validatedData = validationResult.data
+    const { data } = validationResult
 
     // Update the user
-    await db.update(usersTable)
-      .set(validatedData)
+    const update = await db.update(usersTable)
+      .set(data)
       .where(eq(usersTable.id, Number(id)))
-      .execute()
+      .returning()
 
-    // Query to check if the user exists and get updated data
-    const updatedUser = await db.query.usersTable.findFirst({
-      where: (users, { eq }) => eq(users.id, Number(id)),
-    })
-
-    if (!updatedUser) {
+    if (!update.length) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 })
     }
 
-    return NextResponse.json(updatedUser)
+    return NextResponse.json(update[0])
   }
   catch (error) {
     console.error('Error updating user:', error)
