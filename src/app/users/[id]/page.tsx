@@ -10,6 +10,8 @@ export default async function UserDetailPage({ params }: { params: { id: string 
     },
   })
 
+  await new Promise((resolve) => setTimeout(resolve, 250))
+
   if (!user) {
     return (
       <div className="flex flex-col justify-center items-center p-8 text-center">
