@@ -1,10 +1,11 @@
 'use server'
 
 import { userSchema } from '@/schemas/user'
+import { db } from '@/server/db'
+import { usersTable } from '@/server/db/schema'
 import { eq } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
-import { db } from '../db'
-import { usersTable } from '../db/schema'
+import 'server-only'
 
 export async function deleteUser(id: number) {
   try {
@@ -25,19 +26,7 @@ export async function deleteUser(id: number) {
 }
 
 export async function createUser(user: typeof usersTable.$inferInsert) {
-  const existingUser = await db.query.usersTable.findFirst({
-    where: (usersTable, { eq }) => eq(usersTable.email, user.email),
-  })
-
   await new Promise((resolve) => setTimeout(resolve, 1000))
-
-  if (existingUser) {
-    return {
-      success: false,
-      message: `Email ${user.email} already exists`,
-      field: 'email' as const,
-    }
-  }
 
   if (!userSchema.safeParse(user).success) {
     return {
@@ -47,7 +36,21 @@ export async function createUser(user: typeof usersTable.$inferInsert) {
   }
 
   try {
-    await db.insert(usersTable).values(user)
+    // Use the returning strategy to detect if the row was inserted
+    const result = await db.insert(usersTable)
+      .values(user)
+      .onConflictDoNothing()
+      .returning()
+
+    // If no rows were returned, it means there was a conflict
+    if (!result.length) {
+      return {
+        success: false,
+        message: `Email ${user.email} already exists`,
+        field: 'email' as const,
+      }
+    }
+
     revalidatePath('/users/create')
     return {
       success: true,

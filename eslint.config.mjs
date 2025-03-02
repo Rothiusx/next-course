@@ -6,6 +6,7 @@ const config = antfu(
   {
     typescript: true,
     react: true,
+    ignores: ['**/*.json'],
     stylistic: {
       overrides: {
         'style/arrow-parens': 'error',

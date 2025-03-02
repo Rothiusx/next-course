@@ -16,10 +16,13 @@ import { userSchema } from '@/schemas/user'
 import { createUser } from '@/server/actions/users'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
 export function CreateUserForm() {
+  const navigate = useRouter()
+
   const form = useForm<z.infer<typeof userSchema>>({
     resolver: zodResolver(userSchema),
     defaultValues: {
@@ -38,7 +41,7 @@ export function CreateUserForm() {
           const result = await createUser(user)
           if (result.success) {
             toast.success(result.message)
-            form.reset()
+            navigate.push('/users')
           }
           else {
             toast.error(result.message)

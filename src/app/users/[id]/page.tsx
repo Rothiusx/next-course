@@ -4,7 +4,7 @@ export default async function UserDetailPage({ params }: { params: { id: string 
   const { id } = await params
 
   const user = await db.query.usersTable.findFirst({
-    where: (usersTable, { eq }) => eq(usersTable.id, Number(id)),
+    where: (users, { eq }) => eq(users.id, Number(id)),
     columns: {
       id: false,
     },
