@@ -3,11 +3,11 @@ import { CreateUserForm } from '../_components/create-user-form'
 
 export default function CreateUserPage() {
   return (
-    <Card>
+    <Card className="min-w-[400px]">
       <CardHeader>
         <CardTitle>Create New User</CardTitle>
       </CardHeader>
-      <CardContent className="w-[400px]">
+      <CardContent>
         <CreateUserForm />
       </CardContent>
     </Card>
