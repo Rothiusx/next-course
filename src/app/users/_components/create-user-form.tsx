@@ -1,7 +1,7 @@
 'use client'
+
 import type { z } from 'zod'
 import { Button } from '@/components/ui/button'
-
 import {
   Form,
   FormControl,
@@ -21,8 +21,7 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
 export function CreateUserForm() {
-  const navigate = useRouter()
-
+  const router = useRouter()
   const form = useForm<z.infer<typeof userSchema>>({
     resolver: zodResolver(userSchema),
     defaultValues: {
@@ -41,7 +40,7 @@ export function CreateUserForm() {
           const result = await createUser(user)
           if (result.success) {
             toast.success(result.message)
-            navigate.push('/users')
+            router.push('/users')
           }
           else {
             toast.error(result.message)
