@@ -3,13 +3,13 @@
 Push the database schema:
 
 ```bash
-npm run dev
+npm run db:push
 # or
-yarn dev
+yarn db:push
 # or
-pnpm dev
+pnpm db:push
 # or
-bun dev
+bun db:push
 ```
 
 Run the development server:
