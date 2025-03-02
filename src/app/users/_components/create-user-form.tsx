@@ -118,16 +118,14 @@ export function CreateUserForm() {
           )}
         />
         <Button type="submit" disabled={form.formState.isSubmitting}>
-          {form.formState.isSubmitting
-            ? (
-                <>
-                  <Loader2 className="mr-2 w-4 h-4 animate-spin" />
-                  Submitting...
-                </>
-              )
-            : (
-                'Submit'
-              )}
+          {form.formState.isSubmitting ? (
+            <>
+              <Loader2 className="mr-2 w-4 h-4 animate-spin" />
+              Submitting...
+            </>
+          ) : (
+            'Submit'
+          )}
         </Button>
       </form>
     </Form>

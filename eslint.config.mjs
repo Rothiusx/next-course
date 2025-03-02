@@ -1,5 +1,6 @@
 import antfu from '@antfu/eslint-config'
-import nextPlugin from '@next/eslint-plugin-next'
+import next from '@next/eslint-plugin-next'
+import drizzle from 'eslint-plugin-drizzle'
 
 const config = antfu(
   {
@@ -8,17 +9,21 @@ const config = antfu(
     stylistic: {
       overrides: {
         'style/arrow-parens': 'error',
+        'style/multiline-ternary': ['error', 'never'],
       },
     },
     plugins: {
-      '@next/next': nextPlugin,
+      '@next/next': next,
+      'drizzle': drizzle,
     },
     rules: {
-      ...nextPlugin.configs.recommended.rules,
-      ...nextPlugin.configs['core-web-vitals'].rules,
+      ...next.configs.recommended.rules,
+      ...next.configs['core-web-vitals'].rules,
       'react/no-array-index-key': 'off',
       'react/no-unstable-context-value': 'off',
       'react-refresh/only-export-components': 'off',
+      'drizzle/enforce-delete-with-where': ['error', { drizzleObjectName: ['db'] }],
+      'drizzle/enforce-update-with-where': ['error', { drizzleObjectName: ['db'] }],
     },
   },
 )
