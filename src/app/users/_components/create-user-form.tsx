@@ -41,11 +41,12 @@ export function CreateUserForm() {
           if (result.success) {
             toast.success(result.message)
             router.push('/users')
-          }
-          else {
+          } else {
             toast.error(result.message)
             if (result.field) {
-              form.setError(result.field, { message: result.message })
+              form.setError(result.field, {
+                message: result.message,
+              })
             }
           }
         })}

@@ -15,8 +15,7 @@ export async function deleteUser(id: number) {
       success: true,
       message: `User ID: ${id} deleted successfully`,
     }
-  }
-  catch (error) {
+  } catch (error) {
     console.error(error)
     return {
       success: false,
@@ -56,8 +55,7 @@ export async function createUser(user: typeof usersTable.$inferInsert) {
       success: true,
       message: `User ${user.name} created successfully`,
     }
-  }
-  catch (error) {
+  } catch (error) {
     console.error(error)
     return {
       success: false,

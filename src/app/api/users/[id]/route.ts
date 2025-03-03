@@ -13,7 +13,11 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
   })
 
   if (!user) {
-    return NextResponse.json({ error: 'User not found' }, { status: 404 })
+    return NextResponse.json({
+      error: 'User not found',
+    }, {
+      status: 404,
+    })
   }
 
   return NextResponse.json(user)
@@ -29,8 +33,13 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
   // Validate the request body against the partial schema
   const validationResult = userUpdateSchema.safeParse(body)
 
-  if (!validationResult.success) {
-    return NextResponse.json({ error: 'Invalid request data', details: validationResult.error.format() }, { status: 400 })
+  if (!validationResult.success || !validationResult.data) {
+    return NextResponse.json({
+      error: 'Invalid request data',
+      details: validationResult.error.flatten().fieldErrors,
+    }, {
+      status: 400,
+    })
   }
 
   try {
@@ -44,13 +53,20 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
       .returning()
 
     if (!update.length) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 })
+      return NextResponse.json({
+        error: 'User not found',
+      }, {
+        status: 404,
+      })
     }
 
     return NextResponse.json(update[0])
-  }
-  catch (error) {
+  } catch (error) {
     console.error('Error updating user:', error)
-    return NextResponse.json({ error: 'Failed to update user' }, { status: 500 })
+    return NextResponse.json({
+      error: 'Failed to update user',
+    }, {
+      status: 500,
+    })
   }
 }
