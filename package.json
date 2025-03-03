@@ -2,7 +2,7 @@
   "name": "next-course",
   "version": "1.0.3",
   "scripts": {
-    "app": "concurrently \"bun dev\" \"bun db:studio\"",
+    "app": "concurrently -n \"next,studio\" -c \"blue,green\" \"bun dev\" \"bun db:studio\" --kill-others",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
