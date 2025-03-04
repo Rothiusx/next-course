@@ -12,7 +12,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { userSchema } from '@/schemas/user'
+import { userSchema } from '@/schemas/users'
 import { createUser } from '@/server/actions/users'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
@@ -50,7 +50,7 @@ export function CreateUserForm() {
             }
           }
         })}
-        className="space-y-6 w-2/3"
+        className="w-2/3 space-y-6"
       >
         <FormField
           control={form.control}
@@ -123,7 +123,7 @@ export function CreateUserForm() {
         <Button type="submit" disabled={form.formState.isSubmitting}>
           {form.formState.isSubmitting ? (
             <>
-              <Loader2 className="mr-2 w-4 h-4 animate-spin" />
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               Submitting...
             </>
           ) : (

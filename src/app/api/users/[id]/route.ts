@@ -1,11 +1,18 @@
 import type { NextRequest } from 'next/server'
-import { userSchema } from '@/schemas/user'
+import { userSchema } from '@/schemas/users'
 import { db } from '@/server/db'
 import { usersTable } from '@/server/db/schema'
 import { eq } from 'drizzle-orm'
 import { NextResponse } from 'next/server'
 
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+/**
+ * Get user by ID
+ * @description Return a user by providing the ID
+ */
+export async function GET(
+  _request: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   const { id } = await params
 
   const user = await db.query.usersTable.findFirst({
@@ -13,11 +20,14 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
   })
 
   if (!user) {
-    return NextResponse.json({
-      error: 'User not found',
-    }, {
-      status: 404,
-    })
+    return NextResponse.json(
+      {
+        error: 'User not found',
+      },
+      {
+        status: 404,
+      },
+    )
   }
 
   return NextResponse.json(user)
@@ -26,7 +36,14 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
 // Create a partial schema for updates - all fields are optional
 const userUpdateSchema = userSchema.partial()
 
-export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
+/**
+ * Update user by ID
+ * @description Update a user by providing the ID, all properties are optional
+ */
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   const { id } = await params
   const body = await request.json()
 
@@ -34,12 +51,15 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
   const validationResult = userUpdateSchema.safeParse(body)
 
   if (!validationResult.success || !validationResult.data) {
-    return NextResponse.json({
-      error: 'Invalid request data',
-      details: validationResult.error.flatten().fieldErrors,
-    }, {
-      status: 400,
-    })
+    return NextResponse.json(
+      {
+        error: 'Invalid request data',
+        details: validationResult.error.flatten().fieldErrors,
+      },
+      {
+        status: 400,
+      },
+    )
   }
 
   try {
@@ -47,26 +67,33 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
     const { data } = validationResult
 
     // Update the user
-    const update = await db.update(usersTable)
+    const update = await db
+      .update(usersTable)
       .set(data)
       .where(eq(usersTable.id, Number(id)))
       .returning()
 
     if (!update.length) {
-      return NextResponse.json({
-        error: 'User not found',
-      }, {
-        status: 404,
-      })
+      return NextResponse.json(
+        {
+          error: 'User not found',
+        },
+        {
+          status: 404,
+        },
+      )
     }
 
     return NextResponse.json(update[0])
   } catch (error) {
     console.error('Error updating user:', error)
-    return NextResponse.json({
-      error: 'Failed to update user',
-    }, {
-      status: 500,
-    })
+    return NextResponse.json(
+      {
+        error: 'Failed to update user',
+      },
+      {
+        status: 500,
+      },
+    )
   }
 }

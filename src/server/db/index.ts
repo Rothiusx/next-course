@@ -1,8 +1,7 @@
-import process from 'node:process'
+import { env } from '@/env'
 import { createClient } from '@libsql/client'
 import { drizzle } from 'drizzle-orm/libsql'
 import * as schema from './schema'
-import 'dotenv/config'
 
-const client = createClient({ url: process.env.DB_FILE_NAME! })
+const client = createClient({ url: env.DATABASE_URL })
 export const db = drizzle(client, { schema })

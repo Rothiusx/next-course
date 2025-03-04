@@ -1,6 +1,6 @@
 'use server'
 
-import { userSchema } from '@/schemas/user'
+import { userSchema } from '@/schemas/users'
 import { db } from '@/server/db'
 import { usersTable } from '@/server/db/schema'
 import { eq } from 'drizzle-orm'
@@ -36,7 +36,8 @@ export async function createUser(user: typeof usersTable.$inferInsert) {
 
   try {
     // Use the returning strategy to detect if the row was inserted
-    const result = await db.insert(usersTable)
+    const result = await db
+      .insert(usersTable)
       .values(user)
       .onConflictDoNothing()
       .returning()

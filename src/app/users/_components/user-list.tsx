@@ -21,7 +21,7 @@ export async function UserList() {
           ))}
         </ul>
       ) : (
-        <p className="py-8 text-muted-foreground text-center">No users found</p>
+        <p className="text-muted-foreground py-8 text-center">No users found</p>
       )}
     </>
   )

@@ -12,13 +12,13 @@ interface UserItemProps {
 
 export function UserItem({ user }: { user: UserItemProps }) {
   return (
-    <div className="flex flex-row items-center gap-4 bg-primary hover:bg-accent p-4 border border-secondary rounded-md w-full text-primary-foreground transition-colors hover:text-accent-foreground/80">
+    <div className="bg-primary hover:bg-accent border-secondary text-primary-foreground hover:text-accent-foreground/80 flex w-full flex-row items-center gap-4 rounded-md border p-4 transition-colors">
       <p className="flex-1">{user.name}</p>
       <p className="flex-1">{user.email}</p>
       <p className="w-16 text-center">{user.age}</p>
       <Link href={`/users/${user.id}`}>
         <Button className="" asChild>
-          <div className="flex justify-center items-center p-2">
+          <div className="flex items-center justify-center p-2">
             <UserPen className="size-5" />
           </div>
         </Button>
