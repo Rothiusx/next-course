@@ -12,11 +12,20 @@ export async function updateUser(user: Partial<Session['user']>) {
   })
 }
 
-export async function changeEmail(email: string) {
+export async function changeEmail(email: Session['user']['email']) {
   await auth.api.changeEmail({
     headers: await headers(),
     body: {
       newEmail: email,
+    },
+  })
+}
+
+export async function removeUser(userId: Session['user']['id']) {
+  await auth.api.removeUser({
+    headers: await headers(),
+    body: {
+      userId,
     },
   })
 }

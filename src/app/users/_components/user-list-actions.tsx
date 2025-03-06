@@ -1,7 +1,7 @@
 'use client'
 
 import type { UserSelect } from '@/schemas/auth'
-import { removeUser } from '@/actions/auth'
+import { removeUserAction } from '@/actions/auth'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -23,7 +23,7 @@ const initialState = { success: false, message: '' }
 
 export function UserListActions({ userId }: { userId: UserSelect['id'] }) {
   const [state, action, isPending] = useActionState(
-    async () => await removeUser(userId),
+    async () => await removeUserAction(userId),
     initialState,
   )
 

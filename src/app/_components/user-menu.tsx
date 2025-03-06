@@ -61,6 +61,7 @@ export function UserMenu() {
               fetchOptions: {
                 onSuccess: () => {
                   router.push('/')
+                  router.refresh()
                   toast.info('Signed out successfully')
                 },
                 onError: () => {

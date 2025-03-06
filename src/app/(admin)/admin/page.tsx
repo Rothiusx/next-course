@@ -1,4 +1,3 @@
-import { getSession } from '@/auth'
 import {
   Card,
   CardContent,
@@ -6,15 +5,8 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { redirect } from 'next/navigation'
 
 export default async function AdminPage() {
-  const session = await getSession()
-
-  if (!session || session.user.role !== 'admin') {
-    redirect('/')
-  }
-
   return (
     <div className="container mx-auto py-10">
       <h1 className="mb-6 text-3xl font-bold">Admin Dashboard</h1>

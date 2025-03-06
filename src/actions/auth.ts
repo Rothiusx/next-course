@@ -1,11 +1,11 @@
 'use server'
 
 import { auth, getSession } from '@/auth'
+import { removeUser } from '@/auth/utils'
 import { revalidatePath } from 'next/cache'
-import { headers } from 'next/headers'
 import 'server-only'
 
-export async function removeUser(userId: string) {
+export async function removeUserAction(userId: string) {
   const session = await getSession()
 
   const hasPermission = await auth.api.userHasPermission({
@@ -25,12 +25,7 @@ export async function removeUser(userId: string) {
   }
 
   try {
-    await auth.api.removeUser({
-      headers: await headers(),
-      body: {
-        userId,
-      },
-    })
+    await removeUser(userId)
 
     revalidatePath('/users')
     return {
