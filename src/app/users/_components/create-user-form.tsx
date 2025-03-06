@@ -1,6 +1,6 @@
 'use client'
 
-import type { z } from 'zod'
+import type { UsersTableInsert } from '@/schemas/users'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -12,24 +12,32 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { userSchema } from '@/schemas/users'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { usersTableInsertSchema } from '@/schemas/users'
 import { createUser } from '@/server/actions/users'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Loader2 } from 'lucide-react'
+import { Loader2, ShieldUser, User } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
 export function CreateUserForm() {
   const router = useRouter()
-  const form = useForm<z.infer<typeof userSchema>>({
-    resolver: zodResolver(userSchema),
+  const form = useForm<UsersTableInsert>({
+    resolver: zodResolver(usersTableInsertSchema),
     defaultValues: {
       name: '',
-      age: 18,
+      age: 0,
       email: '',
-      city: '',
-      language: 'cs',
+      city: null,
+      language: 'en',
+      permission: 'user',
     },
   })
 
@@ -75,7 +83,17 @@ export function CreateUserForm() {
             <FormItem>
               <FormLabel>Age</FormLabel>
               <FormControl>
-                <Input type="number" inputMode="decimal" {...field} />
+                <Input
+                  type="number"
+                  inputMode="decimal"
+                  placeholder="18"
+                  {...field}
+                  value={field.value === 0 ? '' : field.value}
+                  onChange={(e) => {
+                    const value = e.target.value
+                    field.onChange(value === '' ? '' : Number(value))
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -88,7 +106,11 @@ export function CreateUserForm() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input inputMode="email" {...field} />
+                <Input
+                  inputMode="email"
+                  placeholder="john.doe@example.com"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -101,7 +123,11 @@ export function CreateUserForm() {
             <FormItem>
               <FormLabel>City</FormLabel>
               <FormControl>
-                <Input placeholder="Třinec" {...field} />
+                <Input
+                  placeholder="Třinec"
+                  {...field}
+                  value={field.value ?? ''}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -113,9 +139,50 @@ export function CreateUserForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Language</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select a language" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="cs">Czech</SelectItem>
+                  <SelectItem value="en">English</SelectItem>
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="permission"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Language</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select a language" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem
+                    value="user"
+                    className="flex flex-row items-center gap-2"
+                  >
+                    <User className="h-4 w-4" />
+                    User
+                  </SelectItem>
+                  <SelectItem
+                    value="admin"
+                    className="flex flex-row items-center gap-2"
+                  >
+                    <ShieldUser className="h-4 w-4" />
+                    Admin
+                  </SelectItem>
+                </SelectContent>
+              </Select>
               <FormMessage />
             </FormItem>
           )}

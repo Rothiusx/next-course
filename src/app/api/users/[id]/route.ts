@@ -1,7 +1,7 @@
 import type { NextRequest } from 'next/server'
 import { userSchema } from '@/schemas/users'
 import { db } from '@/server/db'
-import { usersTable } from '@/server/db/schema'
+import { usersTable } from '@/server/db/schema/users'
 import { eq } from 'drizzle-orm'
 import { NextResponse } from 'next/server'
 

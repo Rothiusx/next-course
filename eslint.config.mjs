@@ -6,6 +6,10 @@ import prettier from 'eslint-plugin-prettier/recommended'
 const config = antfu(
   {
     react: true,
+    formatters: {
+      css: 'prettier',
+      markdown: 'prettier',
+    },
     plugins: {
       '@next/next': next,
       drizzle,

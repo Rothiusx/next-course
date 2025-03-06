@@ -25,10 +25,10 @@ export default function UsersLayout({
         </Link>
         <Link
           href="/users/create"
-          className="flex items-center gap-2 transition-opacity hover:opacity-80"
+          className="text=sm flex items-center gap-2 transition-opacity hover:opacity-80"
         >
           <Plus className="size-6" />
-          <span className="text-sm">Create</span>
+          Create User
         </Link>
       </div>
       {children}

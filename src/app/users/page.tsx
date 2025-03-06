@@ -1,8 +1,11 @@
 import { Skeleton } from '@/components/ui/skeleton'
+import { db } from '@/server/db'
 import { Suspense } from 'react'
 import { UserList } from './_components/user-list'
 
 export default async function UsersPage() {
+  const usersPromise = db.query.usersTable.findMany()
+
   return (
     <div className="flex flex-col gap-4 text-center">
       <h1 className="text-2xl font-semibold">List of users</h1>
@@ -15,7 +18,7 @@ export default async function UsersPage() {
           </div>
         }
       >
-        <UserList />
+        <UserList usersPromise={usersPromise} />
       </Suspense>
     </div>
   )

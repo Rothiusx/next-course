@@ -1,13 +1,27 @@
 'use server'
 
-import { userSchema } from '@/schemas/users'
+import type { UsersTableInsert } from '@/schemas/users'
+import { getSession } from '@/auth'
+import { usersTableInsertSchema } from '@/schemas/users'
 import { db } from '@/server/db'
-import { usersTable } from '@/server/db/schema'
+import { usersTable } from '@/server/db/schema/users'
 import { eq } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 import 'server-only'
 
 export async function deleteUser(id: number) {
+  const session = await getSession()
+
+  if (!session) {
+    console.error('Unauthorized')
+    return {
+      success: false,
+      message: 'Unauthorized',
+    }
+  }
+
+  await new Promise((resolve) => setTimeout(resolve, 1000))
+
   try {
     await db.delete(usersTable).where(eq(usersTable.id, id))
     revalidatePath('/users')
@@ -24,10 +38,10 @@ export async function deleteUser(id: number) {
   }
 }
 
-export async function createUser(user: typeof usersTable.$inferInsert) {
+export async function createUser(user: UsersTableInsert) {
   await new Promise((resolve) => setTimeout(resolve, 1000))
 
-  if (!userSchema.safeParse(user).success) {
+  if (!usersTableInsertSchema.safeParse(user).success) {
     return {
       success: false,
       message: 'Invalid form data',

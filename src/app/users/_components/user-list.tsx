@@ -1,25 +1,43 @@
-import { db } from '@/server/db'
-import { UserItem } from './user-item'
+'use client'
 
-export async function UserList() {
-  const users = await db.query.usersTable.findMany({
-    columns: {
-      city: false,
-      language: false,
-    },
-  })
+import type { UsersTableSelect } from '@/schemas/users'
+import type { ColumnDef } from '@tanstack/react-table'
+import { DataTable } from '@/components/ui/data-table'
+import { use } from 'react'
+import { UserListActions } from './user-list-actions'
 
-  await new Promise((resolve) => setTimeout(resolve, 500))
+const columns: ColumnDef<UsersTableSelect>[] = [
+  {
+    accessorKey: 'name',
+    header: 'Name',
+  },
+  {
+    accessorKey: 'email',
+    header: 'Email',
+  },
+  {
+    accessorKey: 'age',
+    header: 'Age',
+  },
+  {
+    id: 'actions',
+    cell: ({ row }) => <UserListActions userId={row.original.id} />,
+  },
+]
+
+export function UserList({
+  usersPromise,
+}: {
+  usersPromise: Promise<UsersTableSelect[]>
+}) {
+  const users = use(usersPromise)
+
   return (
     <>
       {users.length > 0 ? (
-        <ul className="space-y-4">
-          {users.map((user) => (
-            <li key={user.id}>
-              <UserItem user={user} />
-            </li>
-          ))}
-        </ul>
+        <div className="w-[25vw] min-w-[500px]">
+          <DataTable columns={columns} data={users} />
+        </div>
       ) : (
         <p className="text-muted-foreground py-8 text-center">No users found</p>
       )}

@@ -1,6 +1,9 @@
 import type { Metadata } from 'next'
+import { ScrollArea } from '@/components/ui/scroll-area'
 import { Toaster } from '@/components/ui/sonner'
+import { ThemeProvider } from '@/components/ui/theme-provider'
 import { Geist, Geist_Mono } from 'next/font/google'
+import { NavBar } from './_components/nav-bar'
 import '@/styles/globals.css'
 
 const geistSans = Geist({
@@ -22,12 +25,26 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} bg-primary text-primary-foreground antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} bg-background text-foreground antialiased`}
       >
-        {children}
-        <Toaster richColors />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <header>
+            <NavBar />
+          </header>
+          <main>
+            <ScrollArea className="h-full">
+              <div className="flex h-full flex-col">{children}</div>
+            </ScrollArea>
+          </main>
+          <Toaster richColors />
+        </ThemeProvider>
       </body>
     </html>
   )
