@@ -1,4 +1,4 @@
-import { usersTable } from '@/server/db/schema/users'
+import { usersTable } from '@/db/schema/users'
 import { createSchemaFactory, createSelectSchema } from 'drizzle-zod'
 import { z } from 'zod'
 

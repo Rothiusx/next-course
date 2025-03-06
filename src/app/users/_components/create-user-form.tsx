@@ -1,6 +1,7 @@
 'use client'
 
 import type { UsersTableInsert } from '@/schemas/users'
+import { createUser } from '@/actions/users'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -20,7 +21,6 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { usersTableInsertSchema } from '@/schemas/users'
-import { createUser } from '@/server/actions/users'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2, ShieldUser, User } from 'lucide-react'
 import { useRouter } from 'next/navigation'

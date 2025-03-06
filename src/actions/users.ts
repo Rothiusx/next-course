@@ -2,9 +2,9 @@
 
 import type { UsersTableInsert } from '@/schemas/users'
 import { getSession } from '@/auth'
+import { db } from '@/db'
+import { usersTable } from '@/db/schema/users'
 import { usersTableInsertSchema } from '@/schemas/users'
-import { db } from '@/server/db'
-import { usersTable } from '@/server/db/schema/users'
 import { eq } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 import 'server-only'

@@ -1,6 +1,6 @@
 {
   "name": "next-course",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "scripts": {
     "app": "concurrently -n \"next,studio\" -c \"blue,green\" \"next dev --turbopack\" \"drizzle-kit studio\" --kill-others",
     "dev": "next dev --turbopack",

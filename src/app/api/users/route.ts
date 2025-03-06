@@ -1,5 +1,5 @@
 import type { NextRequest } from 'next/server'
-import { db } from '@/server/db'
+import { db } from '@/db'
 import { NextResponse } from 'next/server'
 
 /**

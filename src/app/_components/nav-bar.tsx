@@ -7,10 +7,14 @@ import { UserMenu } from './user-menu'
 export async function NavBar() {
   const session = await getSession()
 
-  const links = [{ href: '/users', label: 'Users', icon: <UserPen /> }]
+  const links = []
 
-  if (session?.user.role === 'admin') {
-    links.push({ href: '/admin', label: 'Admin', icon: <ShieldUser /> })
+  if (session) {
+    links.push({ href: '/users', label: 'Users', icon: <UserPen /> })
+
+    if (session.user.role === 'admin') {
+      links.push({ href: '/admin', label: 'Admin', icon: <ShieldUser /> })
+    }
   }
 
   return (

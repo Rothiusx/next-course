@@ -27,5 +27,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/users/:path*'], // Apply middleware to all paths under users except the users page itself
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|login|$).*)'],
 }

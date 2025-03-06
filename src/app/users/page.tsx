@@ -1,5 +1,5 @@
 import { Skeleton } from '@/components/ui/skeleton'
-import { db } from '@/server/db'
+import { db } from '@/db'
 import { Suspense } from 'react'
 import { UserList } from './_components/user-list'
 

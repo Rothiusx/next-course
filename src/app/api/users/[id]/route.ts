@@ -1,7 +1,7 @@
 import type { NextRequest } from 'next/server'
-import { userSchema } from '@/schemas/users'
-import { db } from '@/server/db'
-import { usersTable } from '@/server/db/schema/users'
+import { db } from '@/db'
+import { usersTable } from '@/db/schema/users'
+import { usersTableInsertSchema } from '@/schemas/users'
 import { eq } from 'drizzle-orm'
 import { NextResponse } from 'next/server'
 
@@ -34,7 +34,7 @@ export async function GET(
 }
 
 // Create a partial schema for updates - all fields are optional
-const userUpdateSchema = userSchema.partial()
+const userUpdateSchema = usersTableInsertSchema.partial()
 
 /**
  * Update user by ID

@@ -1,4 +1,4 @@
-import { db } from '@/server/db'
+import { db } from '@/db'
 
 export default async function UserDetailPage({
   params,

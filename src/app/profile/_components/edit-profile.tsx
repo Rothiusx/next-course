@@ -3,6 +3,7 @@
 import type { Session } from '@/auth'
 import type { StatusMessageProps } from '@/components/ui/status-message'
 import type { UserProfile } from '@/schemas/profile'
+import { updateProfile } from '@/actions/profile'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -16,7 +17,6 @@ import {
 import { Input } from '@/components/ui/input'
 import { StatusMessage } from '@/components/ui/status-message'
 import { userProfileSchema } from '@/schemas/profile'
-import { updateProfile } from '@/server/actions/profile'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'

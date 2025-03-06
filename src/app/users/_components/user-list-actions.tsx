@@ -1,5 +1,6 @@
 'use client'
 
+import { deleteUser } from '@/actions/users'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -13,7 +14,6 @@ import {
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 import { actionToast } from '@/lib/utils'
-import { deleteUser } from '@/server/actions/users'
 import { Loader2, Trash2, UserPen } from 'lucide-react'
 import Link from 'next/link'
 import { useActionState } from 'react'
