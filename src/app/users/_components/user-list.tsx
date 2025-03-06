@@ -1,12 +1,24 @@
 'use client'
 
-import type { UsersTableSelect } from '@/schemas/users'
+import type { UserSelect } from '@/schemas/auth'
 import type { ColumnDef } from '@tanstack/react-table'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Badge } from '@/components/ui/badge'
 import { DataTable } from '@/components/ui/data-table'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { use } from 'react'
 import { UserListActions } from './user-list-actions'
 
-const columns: ColumnDef<UsersTableSelect>[] = [
+const columns: ColumnDef<UserSelect>[] = [
+  {
+    accessorKey: 'image',
+    cell: ({ row }) => (
+      <Avatar>
+        <AvatarImage src={row.original.image ?? undefined} />
+        <AvatarFallback>{row.original.name.charAt(0)}</AvatarFallback>
+      </Avatar>
+    ),
+  },
   {
     accessorKey: 'name',
     header: 'Name',
@@ -20,6 +32,31 @@ const columns: ColumnDef<UsersTableSelect>[] = [
     header: 'Age',
   },
   {
+    accessorKey: 'city',
+    header: 'City',
+  },
+  {
+    accessorKey: 'role',
+    header: 'Role',
+    cell: ({ row }) => (
+      <Badge variant="outline" className="uppercase">
+        {row.original.role}
+      </Badge>
+    ),
+  },
+  {
+    accessorFn: (row) => row.createdAt.toLocaleDateString(),
+    header: 'Created At',
+  },
+  {
+    accessorFn: (row) => row.updatedAt.toLocaleDateString(),
+    header: 'Updated At',
+  },
+  {
+    accessorFn: (row) => (row.banned ? 'Yes' : 'No'),
+    header: 'Banned',
+  },
+  {
     id: 'actions',
     cell: ({ row }) => <UserListActions userId={row.original.id} />,
   },
@@ -28,15 +65,18 @@ const columns: ColumnDef<UsersTableSelect>[] = [
 export function UserList({
   usersPromise,
 }: {
-  usersPromise: Promise<UsersTableSelect[]>
+  usersPromise: Promise<UserSelect[]>
 }) {
   const users = use(usersPromise)
 
   return (
     <>
       {users.length > 0 ? (
-        <div className="w-[25vw] min-w-[500px]">
-          <DataTable columns={columns} data={users} />
+        <div className="min-w-[500px]">
+          <ScrollArea>
+            <DataTable columns={columns} data={users} />
+            <ScrollBar orientation="horizontal" />
+          </ScrollArea>
         </div>
       ) : (
         <p className="text-muted-foreground py-8 text-center">No users found</p>

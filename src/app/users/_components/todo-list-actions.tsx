@@ -1,7 +1,6 @@
 'use client'
 
-import type { UserSelect } from '@/schemas/auth'
-import { removeUser } from '@/actions/auth'
+import { deleteUser } from '@/actions/users'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,19 +16,16 @@ import { Button } from '@/components/ui/button'
 import { actionToast } from '@/lib/utils'
 import { Loader2, Trash2, UserPen } from 'lucide-react'
 import Link from 'next/link'
-import { useActionState, useEffect } from 'react'
+import { useActionState } from 'react'
 
 const initialState = { success: false, message: '' }
 
-export function UserListActions({ userId }: { userId: UserSelect['id'] }) {
-  const [state, action, isPending] = useActionState(
-    async () => await removeUser(userId),
-    initialState,
-  )
-
-  useEffect(() => {
-    actionToast(state)
-  }, [state])
+export function UserListActions({ userId }: { userId: number }) {
+  const [_, action, isPending] = useActionState(async () => {
+    const result = await deleteUser(userId)
+    actionToast(result)
+    return result
+  }, initialState)
 
   return (
     <div className="flex w-full flex-row justify-end gap-2">

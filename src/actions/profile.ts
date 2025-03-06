@@ -3,25 +3,29 @@
 import type { UserProfile } from '@/schemas/profile'
 import { getSession } from '@/auth'
 import { changeEmail, updateUser } from '@/auth/utils'
+import { userProfileSchema } from '@/schemas/profile'
 import { revalidatePath } from 'next/cache'
+import { ZodError } from 'zod'
 import 'server-only'
 
 export async function updateProfile(user: UserProfile) {
   const session = await getSession()
 
-  if (!session) {
-    console.error('Unauthorized')
+  const validatedUser = userProfileSchema.safeParse(user)
+
+  if (!validatedUser.success) {
     return {
       success: false,
-      message: 'Unauthorized',
+      message: validatedUser.error.message,
     }
   }
 
   try {
-    const { email, ...update } = user
-    await updateUser(update)
+    const { email, ...updateData } = validatedUser.data
 
-    if (email !== session.user.email) {
+    await updateUser(updateData)
+
+    if (email !== session?.user.email) {
       await changeEmail(email)
     }
 
@@ -31,11 +35,24 @@ export async function updateProfile(user: UserProfile) {
       message: 'Profile updated successfully',
     }
   } catch (error) {
-    console.error(error)
+    if (error instanceof ZodError) {
+      console.error(JSON.stringify(error.flatten()))
+      return {
+        success: false,
+        message: error.message,
+      }
+    }
+
+    if (error instanceof Error) {
+      return {
+        success: false,
+        message: error.message,
+      }
+    }
+
     return {
       success: false,
-      message:
-        error instanceof Error ? error.message : 'Failed to update profile',
+      message: 'Failed to update profile',
     }
   }
 }

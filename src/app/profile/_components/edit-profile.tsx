@@ -18,7 +18,7 @@ import { Input } from '@/components/ui/input'
 import { StatusMessage } from '@/components/ui/status-message'
 import { userProfileSchema } from '@/schemas/profile'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
@@ -32,14 +32,10 @@ export function EditProfile({ user }: { user: Session['user'] }) {
     defaultValues: {
       name: user.name,
       email: user.email,
-      age: user.age ?? Number(),
-      city: user.city ?? '',
+      age: user.age,
+      city: user.city,
     },
   })
-
-  useEffect(() => {
-    setMessage(undefined!)
-  }, [form.formState.isDirty])
 
   return (
     <Form {...form}>
@@ -47,6 +43,7 @@ export function EditProfile({ user }: { user: Session['user'] }) {
         onSubmit={form.handleSubmit(async (data) => {
           const response = await updateProfile(data)
           if (response?.success) {
+            form.reset(data)
             toast.success(response.message)
             setMessage({
               message: response.message,
@@ -90,6 +87,7 @@ export function EditProfile({ user }: { user: Session['user'] }) {
                   inputMode="numeric"
                   placeholder="18"
                   {...field}
+                  value={field.value ?? ''}
                 />
               </FormControl>
               <FormMessage />
@@ -103,7 +101,11 @@ export function EditProfile({ user }: { user: Session['user'] }) {
             <FormItem>
               <FormLabel>City</FormLabel>
               <FormControl>
-                <Input placeholder="Třinec" {...field} />
+                <Input
+                  placeholder="Třinec"
+                  {...field}
+                  value={field.value ?? ''}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

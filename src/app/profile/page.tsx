@@ -35,7 +35,7 @@ export default async function Page() {
         <CardContent className="flex flex-col gap-4">
           <div className="flex items-center justify-between">
             <span className="text-sm">Permissions</span>
-            <Badge>{session.user.role?.toUpperCase()}</Badge>
+            <Badge className="uppercase">{session.user.role}</Badge>
           </div>
           <EditProfile user={session.user} />
         </CardContent>

@@ -4,7 +4,7 @@ import { Suspense } from 'react'
 import { UserList } from './_components/user-list'
 
 export default async function UsersPage() {
-  const usersPromise = db.query.usersTable.findMany()
+  const usersPromise = db.query.user.findMany()
 
   return (
     <div className="flex flex-col gap-4 text-center">

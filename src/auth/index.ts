@@ -3,7 +3,7 @@ import { env } from '@/env'
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { nextCookies } from 'better-auth/next-js'
-import { admin } from 'better-auth/plugins'
+import { admin, openAPI } from 'better-auth/plugins'
 import { headers } from 'next/headers'
 import { ac, roles } from './permissions'
 
@@ -17,9 +17,13 @@ export const auth = betterAuth({
       ac,
       roles,
     }),
+    openAPI(),
   ],
   user: {
     changeEmail: {
+      enabled: true,
+    },
+    deleteUser: {
       enabled: true,
     },
     additionalFields: {
@@ -45,6 +49,8 @@ export const auth = betterAuth({
 })
 
 export type Session = typeof auth.$Infer.Session
+
+export type User = (typeof auth.$Infer.Session)['user']
 
 export async function getSession() {
   return await auth.api.getSession({

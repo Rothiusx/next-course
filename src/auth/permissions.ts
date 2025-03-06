@@ -13,18 +13,18 @@ const statement = {
 export const ac = createAccessControl(statement)
 
 const user = ac.newRole({
-  todo: ['share'],
   ...userAc.statements,
+  todo: ['share'],
 })
 
 const editor = ac.newRole({
-  todo: ['create', 'share', 'update', 'delete'],
   ...userAc.statements,
+  todo: ['create', 'share', 'update', 'delete'],
 })
 
 const admin = ac.newRole({
-  todo: ['create', 'share', 'update', 'delete'],
   ...adminAc.statements,
+  todo: ['create', 'share', 'update', 'delete'],
 })
 
 export const roles = {
