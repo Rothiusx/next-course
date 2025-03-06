@@ -12,7 +12,5 @@ export default async function AdminLayout({
     redirect('/')
   }
 
-  console.warn('Accessing admin layout')
-
   return <>{children}</>
 }
