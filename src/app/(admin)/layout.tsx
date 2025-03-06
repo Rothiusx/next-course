@@ -14,5 +14,5 @@ export default async function AdminLayout({
 
   console.warn('Accessing admin layout')
 
-  return <div>{children}</div>
+  return <>{children}</>
 }
