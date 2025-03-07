@@ -21,9 +21,9 @@ export async function updateProfile(user: UserProfile) {
   }
 
   try {
-    const { email, ...updateData } = validatedUser.data
+    const { email, ...update } = validatedUser.data
 
-    await updateUser(updateData)
+    await updateUser(update)
 
     if (email !== session?.user.email) {
       await changeEmail(email)

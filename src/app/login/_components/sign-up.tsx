@@ -165,8 +165,8 @@ export function SignUp() {
                   onError: (ctx) => {
                     toast.error(ctx.error.message)
                   },
-                  onSuccess: async () => {
-                    router.push('/')
+                  onSuccess: () => {
+                    router.refresh()
                   },
                 },
               })

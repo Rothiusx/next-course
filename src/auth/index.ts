@@ -23,9 +23,6 @@ export const auth = betterAuth({
     changeEmail: {
       enabled: true,
     },
-    deleteUser: {
-      enabled: true,
-    },
     additionalFields: {
       age: {
         type: 'number',
