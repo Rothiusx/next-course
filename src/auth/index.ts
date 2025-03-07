@@ -1,9 +1,11 @@
 import { db } from '@/db'
+import { user } from '@/db/schema'
 import { env } from '@/env'
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { nextCookies } from 'better-auth/next-js'
 import { admin, openAPI } from 'better-auth/plugins'
+import { eq } from 'drizzle-orm'
 import { headers } from 'next/headers'
 import { ac, roles } from './permissions'
 
@@ -41,6 +43,18 @@ export const auth = betterAuth({
     discord: {
       clientId: env.DISCORD_CLIENT_ID,
       clientSecret: env.DISCORD_CLIENT_SECRET,
+    },
+  },
+  databaseHooks: {
+    user: {
+      update: {
+        after: async (ctx) => {
+          await db
+            .update(user)
+            .set({ updatedAt: new Date() })
+            .where(eq(user.id, ctx.id))
+        },
+      },
     },
   },
 })

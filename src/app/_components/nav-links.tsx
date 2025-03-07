@@ -24,10 +24,8 @@ export function NavLinks({
           <Link
             href={href}
             className={cn(
-              'hover:text-primary flex items-center gap-2 text-lg font-medium transition-colors',
-              pathname.startsWith(href)
-                ? 'text-foreground'
-                : 'text-muted-foreground',
+              'hover:text-secondary-foreground text-muted-foreground flex items-center gap-2 text-lg font-medium transition-colors',
+              pathname.startsWith(href) && 'text-secondary-foreground',
             )}
           >
             {icon}

@@ -12,14 +12,14 @@ export async function NavBar() {
         {
           href: '/users',
           label: 'Users',
-          icon: <UserPen className="size-4" />,
+          icon: <UserPen className="size-6" />,
         },
         ...(session.user.role === 'admin'
           ? [
               {
                 href: '/admin',
                 label: 'Admin',
-                icon: <ShieldUser className="size-4" />,
+                icon: <ShieldUser className="size-6" />,
               },
             ]
           : []),
@@ -27,11 +27,11 @@ export async function NavBar() {
     : []
 
   return (
-    <nav className="bg-secondary bo text-secondary-foreground flex h-12 items-center border-b px-4 md:px-6">
+    <nav className="bg-secondary text-secondary-foreground m-1 flex h-12 items-center rounded-sm border-b px-4 shadow-lg md:px-6">
       <NavLinks links={links} />
       <div className="ml-auto flex items-center space-x-4">
         <ModeToggle />
-        <UserMenu />
+        <UserMenu user={session?.user} />
       </div>
     </nav>
   )

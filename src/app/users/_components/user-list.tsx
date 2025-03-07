@@ -12,6 +12,7 @@ import { UserListActions } from './user-list-actions'
 const columns: ColumnDef<UserSelect>[] = [
   {
     accessorKey: 'image',
+    header: undefined,
     cell: ({ row }) => (
       <Avatar>
         <AvatarImage src={row.original.image ?? undefined} />
@@ -45,12 +46,12 @@ const columns: ColumnDef<UserSelect>[] = [
     ),
   },
   {
-    accessorFn: (row) => row.createdAt.toLocaleDateString(),
-    header: 'Created At',
+    accessorFn: (row) => row.createdAt.toLocaleString(),
+    header: 'Created',
   },
   {
-    accessorFn: (row) => row.updatedAt.toLocaleDateString(),
-    header: 'Updated At',
+    accessorFn: (row) => row.updatedAt.toLocaleString(),
+    header: 'Updated',
   },
   {
     accessorFn: (row) => (row.banned ? 'Yes' : 'No'),

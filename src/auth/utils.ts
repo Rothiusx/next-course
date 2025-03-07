@@ -12,6 +12,7 @@ export async function updateUser(user: Partial<User>) {
     headers: await headers(),
     body: {
       ...user,
+      updatedAt: Date.now(),
     },
   })
 }

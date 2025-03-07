@@ -1,6 +1,7 @@
 'use client'
 
-import { signOut, useSession } from '@/auth/client'
+import type { User } from '@/auth'
+import { signOut } from '@/auth/client'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
@@ -12,19 +13,18 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 
-import { CircleUserRound } from 'lucide-react'
+import { LogIn } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 
-export function UserMenu() {
-  const { data } = useSession()
+export function UserMenu({ user }: { user: User | undefined }) {
   const router = useRouter()
 
-  if (!data) {
+  if (!user) {
     return (
       <Link href="/login" className="relative rounded-full">
-        <CircleUserRound className="size-8" />
+        <LogIn className="size-8" />
       </Link>
     )
   }
@@ -34,9 +34,9 @@ export function UserMenu() {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon">
           <Avatar className="size-8">
-            <AvatarImage src={data.user.image ?? undefined} />
-            <AvatarFallback>
-              <CircleUserRound className="size-8" />
+            <AvatarImage src={user.image ?? undefined} />
+            <AvatarFallback className="bg-background">
+              {user.name.charAt(0).toUpperCase()}
             </AvatarFallback>
           </Avatar>
         </Button>
@@ -44,9 +44,9 @@ export function UserMenu() {
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm leading-none font-medium">{data.user.name}</p>
+            <p className="text-sm leading-none font-medium">{user.name}</p>
             <p className="text-muted-foreground text-xs leading-none">
-              {data.user.email}
+              {user.email}
             </p>
           </div>
         </DropdownMenuLabel>
